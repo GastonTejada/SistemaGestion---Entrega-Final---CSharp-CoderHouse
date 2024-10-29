@@ -11,6 +11,7 @@
 @inject IJSRuntime JSRuntime
 @using Blazored.SessionStorage
 @inject ISessionStorageService sessionStorageService
+@inject AutenticacionService autenticacionService
 
 <div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="row w-100 justify-content-center">
@@ -74,15 +75,14 @@
     {        
 
         loginError = false;
-        var loginResponse = await httpClient.PostAsJsonAsync<LoginDTO>("http://localhost:5176/api/Autenticacion/Autenticar", login);
-        if (loginResponse.IsSuccessStatusCode)
-        {
-            await sessionStorageService.SetItemAsync("loginDTO", login);
 
+        bool isAuthenticated = await autenticacionService.AutenticarUsuario(login);
+
+        if (isAuthenticated)
+        {
             NavigationManager.NavigateTo("/Home");
-            
         }
-        else if (loginResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        else
         {
             loginError = true;
         }

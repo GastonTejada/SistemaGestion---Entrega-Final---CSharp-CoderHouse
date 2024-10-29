@@ -17,14 +17,14 @@ builder.Services.AddTransient<ProductosService>();
 builder.Services.AddTransient<UsuariosService>();
 builder.Services.AddTransient<ProductosVendidosService>();
 builder.Services.AddTransient<VentasService>();
-
-
-builder.Services.AddHttpClient<UsuariosService>(
-    client => client.BaseAddress = new Uri($"{builder.Configuration["ApiUrl"]}/api/Usuarios/")            
-    );
+builder.Services.AddTransient<AutenticacionService>();
 
 builder.Services.AddHttpClient<ProductosService>(
     client => client.BaseAddress = new Uri($"{builder.Configuration["ApiUrl"]}/api/Productos/")
+    );
+
+builder.Services.AddHttpClient<UsuariosService>(
+    client => client.BaseAddress = new Uri($"{builder.Configuration["ApiUrl"]}/api/Usuarios/")            
     );
 
 builder.Services.AddHttpClient<ProductosVendidosService>(
@@ -35,7 +35,9 @@ builder.Services.AddHttpClient<VentasService>(
     client => client.BaseAddress = new Uri($"{builder.Configuration["ApiUrl"]}/api/Ventas/")
     );
 
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("$\"{builder.Configuration[\"ApiUrl\"]}/api/") });
+builder.Services.AddHttpClient<AutenticacionService>(
+    client => client.BaseAddress = new Uri($"{builder.Configuration["ApiUrl"]}/api/Autenticacion/")
+    );
 
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<AuthenticationStateProvider, AutenticacionExtension>();
